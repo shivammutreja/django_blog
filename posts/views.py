@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
@@ -12,7 +13,10 @@ def post_create(request):
         if form.is_valid():
                 instance = form.save(commit=False)
                 instance.save()
-                return HttpResponseRedirect(instance.get_absolute_url())
+                messages.success(request, "Item successfuly saved")
+                return redirect(instance.get_absolute_url())
+        else:
+                messages.success(request, "Item wasn't saved")
 
         context = {
                 "form": form,
@@ -35,7 +39,7 @@ def post_list(request):
             "object_list": query_set,
             "title": "List"
             }
-	return render(request, "index.html", context)
+	return render(request, "base.html", context)
 
 def post_update(request, id=None):
         instance = get_object_or_404(Post, id=id)
@@ -45,7 +49,8 @@ def post_update(request, id=None):
         if form.is_valid():
                 instance = form.save(commit=False)
                 instance.save()
-                return HttpResponseRedirect(instance.get_absolute_url())
+                messages.success(request, "Item saved") 
+                return redirect(instance.get_absolute_url())
 
         context = {
             "instance": instance,
@@ -55,6 +60,10 @@ def post_update(request, id=None):
 
         return render(request, "post_form.html", context)
 
-def post_delete(request):
-    return HttpResponse("<h3>Hello!</h3>")
+def post_delete(request, id=None):
+    instance = get_object_or_404(Post, id=id)
+    instance.delete()
+    messages.success(request, "Item deleted") 
+    return redirect("posts:list")
+
 

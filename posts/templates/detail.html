@@ -1,13 +1,12 @@
-<!doctype>
+{% extends "base.html" %}
 
-<html>
-<body>
-	<h3>{{ instance.title }}</h3>
+{% block content %}
 
-	{{ instance.title }}<br>
-	{{ instance.timestamp }}<br>
-	{{ instance.id }}<br>
-	{{ instance.content }}<br>
+<h3>{{ instance.title }}</h3>
+    
+    {{ instance.title }}<br>
+    {{ instance.timestamp }}<br>
+	  {{ instance.id }}<br>
+    {{ instance.content }}<br>
 
-</body>
-</html>
+{% endblock content %}
